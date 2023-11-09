@@ -12,3 +12,7 @@
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   background: linear-gradient(to right bottom, rgba(101, 142, 246, 1), rgba(127, 1, 245, 1))
 }
+
+#formFileSm{
+  margin-bottom: 2%;
+}

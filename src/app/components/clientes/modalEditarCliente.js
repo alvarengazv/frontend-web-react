@@ -4,7 +4,7 @@ import { MDBCol, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBTyp
 import CloseButton from 'react-bootstrap/CloseButton';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-export default function ModalPerfilCliente(props) {
+export default function ModalEditarCliente(props) {
     
     const [imageError, setImageError] = useState(false);
     const [matches, setMatches] = useState(
@@ -45,13 +45,12 @@ export default function ModalPerfilCliente(props) {
                                                 imageError ? (
                                                     <MDBIcon className='my-5 img-fluid' fas icon="user-alt" size='3x' />
                                                 ) : (<MDBCardImage src={`http://localhost:3005/clientes/C${selectedClient.id_cliente}.jpeg`}
-                                                    alt="Avatar" className="bg-image my-5 img-fluid rounded-circle hover-zoom" style={{ width: '100px' }} 
+                                                    alt="Avatar" className="my-5 img-fluid rounded-circle" style={{ width: '100px' }} 
                                                     onError={()=> setImageError(true)}
                                                 />) }
                                                 <MDBTypography tag="h5">{selectedClient.nome} {selectedClient.sobrenome}</MDBTypography>
                                                 <MDBCardText>ID: {selectedClient.id_cliente}</MDBCardText>
-                                                <a href='#' style={{color: 'white'}}><MDBIcon far icon="edit m-2" /></a>
-                                                <a href='#' style={{color: 'white'}} onClick={props.onDelete}><MDBIcon far icon="trash-can m-2" /></a>
+                                                <MDBIcon far icon="edit mb-4 mt-4" />
                                             </MDBCol>
                                             <MDBCol md="8">
                                                 <CloseButton onClick={props.onHide} style={{float: 'right', margin: '20px'}} />

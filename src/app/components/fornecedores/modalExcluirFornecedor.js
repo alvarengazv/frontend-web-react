@@ -1,10 +1,8 @@
 import Modal from 'react-bootstrap/Modal';
 import React, { useState, useEffect } from 'react';
-import { MDBCol, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBTypography, MDBIcon } from 'mdb-react-ui-kit';
-import CloseButton from 'react-bootstrap/CloseButton';
+import { MDBTypography, MDBBtn } from 'mdb-react-ui-kit';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button } from 'react-bootstrap';
 
 export default function ModalExcluirFornecedor(props) {
     if(props.fornecedor){
@@ -48,9 +46,9 @@ export default function ModalExcluirFornecedor(props) {
                             </Modal.Title>
                         </Modal.Header>
                         <Modal.Footer>
-                            <Button variant="secondary" onClick={props.onHide}>Cancelar</Button>
-                            <Button variant="danger" onClick={deleteFornecedor}>Excluir</Button>
-                        </Modal.Footer>
+                            <MDBBtn rounded color="outline-info" onClick={props.onHide}>Cancelar</MDBBtn>
+                            <MDBBtn rounded color="danger" onClick={deleteFornecedor}>Excluir</MDBBtn>
+                       </Modal.Footer>
                     </Modal>
                 </>
             )
