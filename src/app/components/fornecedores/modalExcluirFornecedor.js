@@ -14,12 +14,10 @@ export default function ModalExcluirFornecedor(props) {
         function deleteFornecedor(){
             axios.post('http://localhost:3005/fornecedores_del/' + id)
             .then(response => {
-                alert('Fornecedor excluído com sucesso!');
+                props.onDelete();
                 props.onHide();
-                window.location.reload();
             })
             .catch(error => {
-                console.log(error)
                 alert('Erro ao excluir fornecedor!');
             })
         }

@@ -50,7 +50,7 @@ export default function ModalPerfilCliente(props) {
                                                 />) }
                                                 <MDBTypography tag="h5">{selectedClient.nome} {selectedClient.sobrenome}</MDBTypography>
                                                 <MDBCardText>ID: {selectedClient.id_cliente}</MDBCardText>
-                                                <a href='#' style={{color: 'white'}}><MDBIcon far icon="edit m-2" /></a>
+                                                <a href='#' style={{color: 'white'}} onClick={props.onEdit}><MDBIcon far icon="edit m-2" /></a>
                                                 <a href='#' style={{color: 'white'}} onClick={props.onDelete}><MDBIcon far icon="trash-can m-2" /></a>
                                             </MDBCol>
                                             <MDBCol md="8">

@@ -14,12 +14,10 @@ export default function ModalExcluirCliente(props) {
         function deleteCliente(){
             axios.post('http://localhost:3005/clientes_del/' + id)
             .then(response => {
-                alert('Cliente excluído com sucesso!');
+                props.onDelete();
                 props.onHide();
-                window.location.reload();
             })
             .catch(error => {
-                console.log(error)
                 alert('Erro ao excluir cliente!');
             })
         }
@@ -28,6 +26,10 @@ export default function ModalExcluirCliente(props) {
             window
             .matchMedia("(min-width: 768px)")
             .addEventListener('change', e => setMatches( e.matches ));
+    
+            return () => {
+                window.matchMedia("(min-width: 768px)").removeEventListener('change', e => setMatches( e.matches ));
+            }
         }, [props.client]);
 
         if (props.client) {
@@ -47,7 +49,7 @@ export default function ModalExcluirCliente(props) {
                         </Modal.Header>
                         <Modal.Footer>
                             <MDBBtn rounded color="outline-info" onClick={props.onHide}>Cancelar</MDBBtn>
-                            <MDBBtn rounded color="outline-danger" onClick={deleteCliente}>Excluir</MDBBtn>
+                            <MDBBtn rounded color="danger" onClick={deleteCliente}>Excluir</MDBBtn>
                         </Modal.Footer>
                     </Modal>
                 </>

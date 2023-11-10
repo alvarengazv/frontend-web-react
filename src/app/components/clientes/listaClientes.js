@@ -5,17 +5,17 @@ import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ModalExcluirCliente from './modalExcluirCliente';
 import ModalPerfilCliente from './modalPerfilCliente';
-import ModalEditarCliente from './modalEditarCliente';
 import { MDBSpinner } from 'mdb-react-ui-kit';
 import React from 'react';
+import ImageWithFallback from '../geral/imageFallback';
 
-export default function ListaClientes(){
+export default function ListaClientes(props){
     
     const [modalPerfilShow, setModalPerfilShow] = useState(false);
     const [modalExcluirShow, setModalExcluirShow] = useState(false);
-    const [modalEditarShow, setModalEditarShow] = useState(false);
 
     const [lista, setLista] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [selectedClient, setSelectedClient] = useState(null);
 
     function handleExcluirCliente(){
@@ -23,7 +23,22 @@ export default function ListaClientes(){
         setModalExcluirShow(true);
     }
 
+    function handleEditarCliente(){
+        setModalPerfilShow(false);
+        props.editar(selectedClient);
+        props.setIsForm(false);
+    }
+
+    function handleMostrarPerfilCliente(){
+        setModalPerfilShow(false);
+    }
+
+    function handleMostrarExcluirCliente(){
+        setModalExcluirShow(false);
+    }
+
     function fetchListaClientes(){
+        setLista([]);
         axios.get('http://localhost:3005/clientes_all')
         .then(response => {
             var tipo = true;
@@ -31,19 +46,24 @@ export default function ListaClientes(){
                 var listaGroup = response.data.map(e => {
                     tipo = !tipo;
                     return(
-                        <ListGroupItem className='px-3 rounded-3 mb-1' action onClick={() => {
+                        <ListGroupItem className='p-2 rounded-3 mb-1' action onClick={() => {
                             setModalPerfilShow(true)
                             setSelectedClient(e)
                         }} style={{border: 'none'}} variant={'info'}
                         key={e.id_cliente}>
                             <div className='d-flex flex-row justify-content-between'>
-                                <div style={{flex: 1, textAlign: 'left'}}>{e.nome + ' ' + e.sobrenome}</div>
-                                <div style={{flex: 1, textAlign: 'right'}}>{e.id_cliente}</div>
+                                <ImageWithFallback
+                                    src={`http://localhost:3005/clientes/C${e.id_cliente}.jpeg`}	
+                                    alt='Avatar'
+                                />
+                                <div className='my-1' style={{flex: 1, textAlign: 'left'}}>{e.nome + ' ' + e.sobrenome}</div>
+                                <div className='my-1' style={{flex: 1, textAlign: 'right'}}>{e.id_cliente}</div>
                             </div>
                         </ListGroupItem>
-                    )}
-                )
+                    )
+                })
                 setLista(listaGroup)
+                setIsLoading(false);
             }
         })
         .catch(error => {
@@ -57,7 +77,9 @@ export default function ListaClientes(){
 
     return (
         <>  
-            {lista.length > 0 ?
+            <h1>Lista de clientes</h1>
+            {
+            !isLoading ?
                 (<ListGroup >
                     <ListGroupItem disabled 
                         className='px-3 rounded-3 mb-1' 
@@ -82,19 +104,15 @@ export default function ListaClientes(){
             <ModalPerfilCliente 
                 client={selectedClient}
                 show={modalPerfilShow}
-                onHide={() => setModalPerfilShow(false)} 
-                onEdit={() => setModalEditarShow(true)}
+                onHide={handleMostrarPerfilCliente} 
+                onEdit={handleEditarCliente}
                 onDelete={handleExcluirCliente}
             />
-            <ModalExcluirCliente 
+            <ModalExcluirCliente
+                onDelete={() => fetchListaClientes()}
                 client={selectedClient}
                 show={modalExcluirShow}
-                onHide={() => setModalExcluirShow(false)}
-            />
-            <ModalEditarCliente 
-                client={selectedClient}
-                show={modalEditarShow}
-                onHide={() => setModalEditarShow(false)}
+                onHide={handleMostrarExcluirCliente}
             />
         </>
     )
