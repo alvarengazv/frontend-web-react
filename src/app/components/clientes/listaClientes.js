@@ -55,6 +55,7 @@ export default function ListaClientes(props){
                                 <ImageWithFallback
                                     src={`http://localhost:3005/clientes/C${e.id_cliente}.jpeg`}	
                                     alt='Avatar'
+                                    size='20px'
                                 />
                                 <div className='my-1' style={{flex: 1, textAlign: 'left'}}>{e.nome + ' ' + e.sobrenome}</div>
                                 <div className='my-1' style={{flex: 1, textAlign: 'right'}}>{e.id_cliente}</div>
@@ -113,6 +114,7 @@ export default function ListaClientes(props){
                 client={selectedClient}
                 show={modalExcluirShow}
                 onHide={handleMostrarExcluirCliente}
+                userLogged={props.userLogged}
             />
         </>
     )

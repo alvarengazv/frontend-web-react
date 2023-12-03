@@ -16,16 +16,31 @@ import {
   MDBBreadcrumb,
   MDBBreadcrumbItem,
   MDBNavbarItem,
+  MDBIcon
 } from 'mdb-react-ui-kit';
 import FormClientes from './components/clientes/formClientes';
 import FormFornecedores from './components/fornecedores/formFornecedores';
+import LoginCliente from './components/clientes/loginCliente';
+import ModalPerfilCliente from './components/clientes/modalPerfilCliente';
+import ImageWithFallback from './components/geral/imageFallback';
 
 const App = () => {
+  const [modalPerfilShow, setModalPerfilShow] = useState(false);
   const [isCliente, setIsCliente] = useState(true);
   const [isForm, setIsForm] = useState(false);
   const [isCadastro, setIsCadastro] = useState(true);
   const [dadosCliente, setDadosCliente] = useState({});
   const [dadosFornecedor, setDadosFornecedor] = useState({});
+
+  function handleMostrarPerfilCliente(){
+    setModalPerfilShow(false);
+  }
+
+  function handleEditarCliente(e){
+    setModalPerfilShow(false);
+    setDadosCliente(e);
+    setIsForm(false);
+  }
 
   function BarraNavegacao(props) {
     const { setIsCliente } = props;
@@ -41,7 +56,20 @@ const App = () => {
     return (
       <>
         <MDBNavbar expand='lg' sticky light bgColor='light'>
-          <MDBContainer className='justify-content-center' fluid>
+          <MDBContainer className='d-flex justify-content-between' fluid>
+          <div style={{ margin: '5px 0 5px 5px', display: 'flex', alignSelf: 'left' }}>
+            <a href='#' onClick={() => {
+                  setModalPerfilShow(true)
+            }}> 
+              <ImageWithFallback
+                  src={`http://localhost:3005/clientes/C${user.id_cliente}.jpeg`}	
+                  alt='Perfil'
+                  size='40px'
+                  login={true}
+              />
+            </a>
+            <span style={{ display: 'flex', alignItems: 'center', marginLeft: '10px', marginBottom: '0', fontSize: "20px" }}>{user.nome}</span>
+          </div>
               <MDBNavbarNav fullWidth={false} className='mb-2 mb-lg-0'>
                 <Nav variant="underline" className="justify-content-center" defaultActiveKey="clientes" activeKey={isCliente ? "clientes" : "fornecedores"} as="ul">
                   <MDBNavbarItem>
@@ -72,28 +100,55 @@ const App = () => {
     );
   }
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState({});
+
+  function handleLogin(e) {
+    setIsLoggedIn(true);
+    setUser(e);
+  }
+
+  function handleLogout() {
+    setModalPerfilShow(false);
+    setUser({});
+    setIsLoggedIn(false);
+  }
+
   return (
     <main>
-      <>
-        <BarraNavegacao setIsCliente={setIsCliente} />
-        <div style={{ margin: '0 10% 0 10%' }}>
-          {isCliente ? 
-            !isForm ? <ListaClientes 
-              setIsForm={() => setIsForm(true)}
-              setIsCadastro={(op) => setIsCadastro(op)} 
-              editar={(dados) => setDadosCliente(dados)} />
-            : <FormClientes 
-                operacao={isCadastro}
-                dadosCliente={dadosCliente} /> 
-          : !isForm ? <ListaFornecedores 
-              setIsForm={() => setIsForm(true)}
-              setIsCadastro={(op) => setIsCadastro(op)}
-              editar={(dados) => setDadosFornecedor(dados)} />
-          : <FormFornecedores 
-              operacao={isCadastro}
-              dadosFornecedor={dadosFornecedor}/>}
-        </div>
-      </>
+          {isLoggedIn ? (
+            <>
+              <BarraNavegacao setIsCliente={setIsCliente} />
+              <div style={{ margin: '0 10% 0 10%' }}>
+                {isCliente ? 
+                  !isForm ? <ListaClientes 
+                    setIsForm={() => setIsForm(true)}
+                    setIsCadastro={(op) => setIsCadastro(op)} 
+                    editar={(dados) => setDadosCliente(dados)}
+                    userLogged={user} />
+                  : <FormClientes 
+                      operacao={isCadastro}
+                      dadosCliente={dadosCliente} /> 
+                : !isForm ? <ListaFornecedores 
+                    setIsForm={() => setIsForm(true)}
+                    setIsCadastro={(op) => setIsCadastro(op)}
+                    editar={(dados) => setDadosFornecedor(dados)} />
+                : <FormFornecedores 
+                    operacao={isCadastro}
+                    dadosFornecedor={dadosFornecedor}/>}
+              </div>
+            </>
+          ) : (
+            <LoginCliente onLogin={(e) => { handleLogin(e); }} />
+          )}
+          <ModalPerfilCliente 
+              userLogged={isLoggedIn}
+              client={user}
+              show={modalPerfilShow}
+              onHide={handleMostrarPerfilCliente} 
+              onEdit={(e) => {handleEditarCliente(e);}}
+              onLoggout={handleLogout}
+          />
     </main>
   );
 

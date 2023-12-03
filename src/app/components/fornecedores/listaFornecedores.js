@@ -33,6 +33,7 @@ export default function ListaFornecedores(props) {
                                 <ImageWithFallback
                                     src={`http://localhost:3005/fornecedores/F${e.id_fornecedor}.jpeg`}	
                                     alt='Logomarca'
+                                    size='20px'
                                 />
                                 <div className='py-1' style={{ flex: 1, textAlign: 'left' }}>{e.razao + ' - ' + e.cpf_cnpj}</div>
                                 <div style={{ flex: 1, textAlign: 'right' }}>

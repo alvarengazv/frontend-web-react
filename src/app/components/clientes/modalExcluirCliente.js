@@ -12,14 +12,19 @@ export default function ModalExcluirCliente(props) {
         )
 
         function deleteCliente(){
-            axios.post('http://localhost:3005/clientes_del/' + id)
-            .then(response => {
-                props.onDelete();
+            if(props.userLogged.id_cliente !== id){
+                axios.post('http://localhost:3005/clientes_del/' + id)
+                .then(response => {
+                    props.onDelete();
+                    props.onHide();
+                })
+                .catch(error => {
+                    alert('Erro ao excluir cliente!');
+                })
+            } else{
                 props.onHide();
-            })
-            .catch(error => {
-                alert('Erro ao excluir cliente!');
-            })
+                alert('Você não pode excluir sua própria conta!');
+            }
         }
 
         useEffect(() => {

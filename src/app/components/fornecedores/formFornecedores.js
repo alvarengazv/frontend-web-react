@@ -69,9 +69,8 @@ export default function FormFornecedores(props) {
         'Content-Type': 'multipart/form-data'
       }})
       .then((response) => {
-        alert('Fornecedor cadastrado com sucesso!');
+        alert('Fornecedor cadastrado com sucesso! Refaça o Login para ver o novo cadastro!');
         window.location.reload();
-        console.log(response);
       }).catch((error) => {
         alert('Erro ao cadastrar fornecedor!');
         console.log(error);
@@ -82,7 +81,7 @@ export default function FormFornecedores(props) {
         'Content-Type': 'multipart/form-data'
       }})
       .then((response) => {
-        alert('Fornecedor atualizado com sucesso!');
+        alert('Fornecedor atualizado com sucesso!  Refaça o Login para ver a alteração!');
         window.location.reload();
       }).catch((error) => {
         alert('Erro ao atualizar fornecedor!');

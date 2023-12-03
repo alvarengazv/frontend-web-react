@@ -69,7 +69,7 @@ export default function FormClientes(props) {
       }})
       .then((response) => {
         setIsCadastro(false);
-        alert('Cliente cadastrado com sucesso!');
+        alert('Cliente cadastrado com sucesso! Refaça o Login para ver o novo cadastro!');
         window.location.reload();
       }).catch((error) => {
         alert('Erro ao cadastrar cliente!');
@@ -80,7 +80,7 @@ export default function FormClientes(props) {
         'Content-Type': 'multipart/form-data'
       }})
       .then((response) => {
-        alert('Cliente editado com sucesso!');
+        alert('Cliente editado com sucesso! Refaça o Login para ver a alteração!');
         window.location.reload();
       }).catch((error) => {
         alert('Erro ao editar cliente!');
